@@ -13,6 +13,7 @@ fun AppNavigation() {
     NavHost(
         navController = navController,
         startDestination = "home"
+
     ) {
 
         composable("home") {
@@ -43,6 +44,14 @@ fun AppNavigation() {
         composable("frequency_matching") {
 
             FrequencyMatchingScreen(navController)
+        }
+        composable("joystick") {
+
+            JoystickScreen(navController)
+        }
+        composable("dual_joystick") {
+
+            DualJoystickScreen(navController)
         }
     }
 }

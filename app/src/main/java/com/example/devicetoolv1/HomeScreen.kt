@@ -43,7 +43,7 @@ fun HomeScreen(navController: NavHostController) {
 
             MenuButton("STICK MODE") {
 
-                navController.navigate("stick_mode")
+                navController.navigate("dual_joystick")
             }
 
             MenuButton("VIDEO VIEWING") {
