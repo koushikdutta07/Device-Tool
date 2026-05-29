@@ -1,13 +1,19 @@
 package com.example.devicetoolv1
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.net.InetAddress
-import android.util.Log
 
 object UdpSender {
+
+    // YOUR CURRENT LAPTOP WIFI IP
+    private const val SERVER_IP = "10.211.251.92"
+
+    // RECEIVER PORT
+    private const val SERVER_PORT = 5005
 
     suspend fun sendChannels(
         ch1: Int,
@@ -17,6 +23,8 @@ object UdpSender {
     ) {
 
         withContext(Dispatchers.IO) {
+
+            var socket: DatagramSocket? = null
 
             try {
 
@@ -29,26 +37,33 @@ object UdpSender {
 
                 val bytes = message.toByteArray()
 
-                val ipAddress = InetAddress.getByName("192.168.0.116")
+                val address = InetAddress.getByName(SERVER_IP)
 
                 val packet = DatagramPacket(
                     bytes,
                     bytes.size,
-                    ipAddress,
-                    5005
+                    address,
+                    SERVER_PORT
                 )
 
-                val socket = DatagramSocket()
-
-                Log.d("UDP_TEST", message)
+                socket = DatagramSocket()
 
                 socket.send(packet)
 
-                socket.close()
+                Log.d("UDP_TEST", "Sent:\n$message")
 
             } catch (e: Exception) {
 
+                Log.e(
+                    "UDP_TEST",
+                    "UDP Send Failed: ${e.message}"
+                )
+
                 e.printStackTrace()
+
+            } finally {
+
+                socket?.close()
             }
         }
     }
